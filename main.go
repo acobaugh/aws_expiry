@@ -17,10 +17,7 @@ func main() {
 	flag.Parse()
 
 	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		fmt.Printf("Error: %s\n", homeDir)
-		os.Exit(1)
-	}
+	handleError(err)
 
 	profile := os.Getenv("AWS_PROFILE")
 	sharedCredsFile := fmt.Sprintf("%s/%s", homeDir, ".aws/credentials")
@@ -54,7 +51,7 @@ func main() {
 
 func handleError(err error) {
 	if err != nil {
-		fmt.Printf("Err: %s\n", err)
+		fmt.Fprintf(os.Stderr, "Err: %s\n", err)
 		os.Exit(1)
 	}
 }
