@@ -11,9 +11,14 @@ import (
 
 const key = "x_security_token_expires"
 
+var fSilent *bool
+
 func main() {
 	fTimeLeft := flag.Bool("time-left", false, "Show time remaining")
 	fErrorOnExpired := flag.Bool("error-on-expired", false, "Exit 1 if creds are expired")
+	fSilent = flag.Bool("silent", false, "Suppress errors")
+	fNewline := flag.Bool("newline", false, "Output newline")
+
 	flag.Parse()
 
 	homeDir, err := os.UserHomeDir()
@@ -47,11 +52,17 @@ func main() {
 	} else {
 		fmt.Printf("%s", expiry)
 	}
+
+	if *fNewline && !*fSilent {
+		fmt.Println()
+	}
 }
 
 func handleError(err error) {
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Err: %s\n", err)
+		if !*fSilent {
+			fmt.Fprintf(os.Stderr, "Err: %s\n", err)
+		}
 		os.Exit(1)
 	}
 }
