@@ -53,7 +53,7 @@ func main() {
 		fmt.Printf("%s", expiry)
 	}
 
-	if *fNewline && !*fSilent {
+	if *fNewline {
 		fmt.Println()
 	}
 }
